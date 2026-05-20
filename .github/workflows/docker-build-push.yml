@@ -21,11 +21,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set image name
+        run: echo "DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/cs6620-app" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cs6620-app:latest
+          tags: ${{ env.DOCKERHUB_IMAGE }}:latest
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.revision=${{ github.sha }}
